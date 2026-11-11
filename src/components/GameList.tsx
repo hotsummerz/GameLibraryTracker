@@ -5,11 +5,12 @@ interface GameListProps {
   games: Game[];
   allGames: Game[];
   onDelete: (game: Game) => void;
+  onEdit: (game: Game) => void;
   onChangeStatus: (id: string, status: GameStatus) => void;
   onRate: (id: string, rating: number) => void;
 }
 
-export default function GameList({ games, allGames, onDelete, onChangeStatus, onRate }: GameListProps) {
+export default function GameList({ games, allGames, onDelete, onEdit, onChangeStatus, onRate }: GameListProps) {
   if (allGames.length === 0) {
     return (
       <div className="empty-state">
@@ -33,6 +34,7 @@ export default function GameList({ games, allGames, onDelete, onChangeStatus, on
           key={game.id}
           game={game}
           onDelete={onDelete}
+          onEdit={onEdit}
           onChangeStatus={onChangeStatus}
           onRate={onRate}
         />

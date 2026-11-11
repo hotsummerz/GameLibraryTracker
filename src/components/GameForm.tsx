@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Game, GameStatus } from '../types';
 import StarRating from './StarRating';
 import CoverUpload from './CoverUpload';
 
 interface GameFormProps {
   onAdd: (game: Game) => void;
+  onUpdate: (game: Game) => void;
+  editingGame: Game | null;
+  onCancelEdit: () => void;
 }
 
-export default function GameForm({ onAdd }: GameFormProps) {
+export default function GameForm({ onAdd, onUpdate, editingGame, onCancelEdit }: GameFormProps) {
   const [title, setTitle] = useState('');
   const [platform, setPlatform] = useState('PC');
   const [genre, setGenre] = useState('');
@@ -19,30 +22,23 @@ export default function GameForm({ onAdd }: GameFormProps) {
   const [titleError, setTitleError] = useState('');
   const [coverError, setCoverError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!title.trim()) {
-      setTitleError('Judul game wajib diisi');
-      return;
+  // Load editing game data
+  useEffect(() => {
+    if (editingGame) {
+      setTitle(editingGame.title);
+      setPlatform(editingGame.platform);
+      setGenre(editingGame.genre);
+      setStatus(editingGame.status);
+      setHours(editingGame.hours);
+      setRating(editingGame.rating);
+      setNotes(editingGame.notes);
+      setCover(editingGame.cover);
+      setTitleError('');
+      setCoverError('');
     }
+  }, [editingGame]);
 
-    const newGame: Game = {
-      id: crypto.randomUUID(),
-      title: title.trim(),
-      platform,
-      genre: genre.trim(),
-      status,
-      rating,
-      hours: Math.max(0, hours),
-      notes: notes.trim(),
-      cover,
-      createdAt: Date.now()
-    };
-
-    onAdd(newGame);
-
-    // Reset form
+  const resetForm = () => {
     setTitle('');
     setPlatform('PC');
     setGenre('');
@@ -53,6 +49,53 @@ export default function GameForm({ onAdd }: GameFormProps) {
     setCover(undefined);
     setTitleError('');
     setCoverError('');
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!title.trim()) {
+      setTitleError('Judul game wajib diisi');
+      return;
+    }
+
+    if (editingGame) {
+      // Update existing game
+      const updatedGame: Game = {
+        ...editingGame,
+        title: title.trim(),
+        platform,
+        genre: genre.trim(),
+        status,
+        rating,
+        hours: Math.max(0, hours),
+        notes: notes.trim(),
+        cover
+      };
+      onUpdate(updatedGame);
+      resetForm();
+    } else {
+      // Add new game
+      const newGame: Game = {
+        id: crypto.randomUUID(),
+        title: title.trim(),
+        platform,
+        genre: genre.trim(),
+        status,
+        rating,
+        hours: Math.max(0, hours),
+        notes: notes.trim(),
+        cover,
+        createdAt: Date.now()
+      };
+      onAdd(newGame);
+      resetForm();
+    }
+  };
+
+  const handleCancel = () => {
+    resetForm();
+    onCancelEdit();
   };
 
   return (
@@ -78,12 +121,10 @@ export default function GameForm({ onAdd }: GameFormProps) {
           <label htmlFor="platform">Platform</label>
           <select id="platform" value={platform} onChange={(e) => setPlatform(e.target.value)}>
             <option value="PC">PC</option>
-            <option value="PlayStation 5">PlayStation 5</option>
-            <option value="PlayStation 4">PlayStation 4</option>
-            <option value="Xbox Series X/S">Xbox Series X/S</option>
-            <option value="Xbox One">Xbox One</option>
-            <option value="Nintendo Switch">Nintendo Switch</option>
             <option value="Mobile">Mobile</option>
+            <option value="PlayStation">PlayStation</option>
+            <option value="Xbox">Xbox</option>
+            <option value="Nintendo">Nintendo</option>
             <option value="Lainnya">Lainnya</option>
           </select>
         </div>
@@ -147,8 +188,13 @@ export default function GameForm({ onAdd }: GameFormProps) {
           <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path d="M12 5v14m7-7H5" />
           </svg>
-          Tambah Game
+          {editingGame ? 'Update Game' : 'Tambah Game'}
         </button>
+        {editingGame && (
+          <button type="button" className="btn-secondary" onClick={handleCancel}>
+            Batal
+          </button>
+        )}
       </div>
     </form>
   );

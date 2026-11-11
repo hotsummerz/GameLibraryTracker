@@ -19,11 +19,21 @@ function App() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [sortBy, setSortBy] = useState<SortKey>('newest');
   const [gameToDelete, setGameToDelete] = useState<Game | null>(null);
+  const [editingGame, setEditingGame] = useState<Game | null>(null);
 
   const visibleGames = applyFilters(games, searchText, statusFilter, sortBy);
 
   const handleAddGame = (game: Game) => {
     setGames([game, ...games]);
+  };
+
+  const handleUpdateGame = (updatedGame: Game) => {
+    setGames(games.map(g => g.id === updatedGame.id ? updatedGame : g));
+    setEditingGame(null);
+  };
+
+  const handleEditGame = (game: Game) => {
+    setEditingGame(game);
   };
 
   const handleDeleteGame = (game: Game) => {
@@ -72,10 +82,15 @@ function App() {
 
           <section id="tambah" className="section-block">
             <div className="section-header">
-              <h2>Tambah Game</h2>
+              <h2>{editingGame ? 'Edit Game' : 'Tambah Game'}</h2>
             </div>
             <div className="bento-card">
-              <GameForm onAdd={handleAddGame} />
+              <GameForm
+                onAdd={handleAddGame}
+                onUpdate={handleUpdateGame}
+                editingGame={editingGame}
+                onCancelEdit={() => setEditingGame(null)}
+              />
             </div>
           </section>
 
@@ -96,6 +111,7 @@ function App() {
               games={visibleGames}
               allGames={games}
               onDelete={handleDeleteGame}
+              onEdit={handleEditGame}
               onChangeStatus={handleChangeStatus}
               onRate={handleRate}
             />
