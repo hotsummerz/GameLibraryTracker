@@ -19,7 +19,7 @@ Aplikasi web untuk mencatat dan mengelola koleksi game pribadi. Dibangun dengan 
 - **React 18** - UI library
 - **Vite** - Build tool & dev server
 - **TypeScript** - Type safety
-- **CSS** - Plain CSS (no framework)
+- **CSS** - Plain CSS (no framework), system font stack
 - **localStorage** - Data persistence
 
 ## Konsep React yang Diterapkan
