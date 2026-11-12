@@ -30,24 +30,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create .env from repository variables
-        env:
-          VITE_APP_NAME: ${{ vars.VITE_APP_NAME }}
-          VITE_APP_VERSION: ${{ vars.VITE_APP_VERSION }}
-          VITE_COURSE_NAME: ${{ vars.VITE_COURSE_NAME }}
-          VITE_STUDENT_NAME: ${{ vars.VITE_STUDENT_NAME }}
-          VITE_STUDENT_NIM: ${{ vars.VITE_STUDENT_NIM }}
-          VITE_PROFILE_URL: ${{ vars.VITE_PROFILE_URL }}
-        run: |
-          {
-            echo "VITE_APP_NAME=${VITE_APP_NAME}"
-            echo "VITE_APP_VERSION=${VITE_APP_VERSION}"
-            echo "VITE_COURSE_NAME=${VITE_COURSE_NAME}"
-            echo "VITE_STUDENT_NAME=${VITE_STUDENT_NAME}"
-            echo "VITE_STUDENT_NIM=${VITE_STUDENT_NIM}"
-            echo "VITE_PROFILE_URL=${VITE_PROFILE_URL}"
-          } > .env
-
       - name: Build
         run: npm run build
 
