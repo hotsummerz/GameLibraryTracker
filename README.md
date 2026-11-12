@@ -156,11 +156,17 @@ interface Game {
 
 ## Deployment
 
-1. Build project: `npm run build`
-2. Deploy folder `dist/` ke hosting
-3. Set base path di `vite.config.ts` sesuai deployment:
-   - Subdomain: `base: '/'`
-   - Subpath: `base: '/game-library/'`
+Deploy otomatis ke GitHub Pages lewat `.github/workflows/deploy.yml` setiap push ke `main`.
+
+1. Aktifkan Pages: **Settings → Pages → Source: GitHub Actions**
+2. Tambahkan **repository variables** di **Settings → Secrets and variables → Actions → Variables**:
+   - `VITE_APP_NAME`, `VITE_APP_VERSION`, `VITE_COURSE_NAME`
+   - `VITE_STUDENT_NAME`, `VITE_STUDENT_NIM`, `VITE_PROFILE_URL`
+3. Push ke `main` (atau re-run workflow)
+
+`.env` sengaja tidak di-commit (lihat `.gitignore`), sehingga workflow membuat file `.env` saat build dari variables di atas. Nilai `VITE_*` di-inline saat build, jadi setelah mengubah variable harus deploy ulang.
+
+`vite.config.ts` memakai `base: './'` agar aset tetap benar baik di `username.github.io/nama-repo/` maupun di custom domain.
 
 ## Browser Support
 
