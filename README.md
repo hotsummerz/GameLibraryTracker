@@ -1,6 +1,6 @@
 # Game Library Tracker
 
-Aplikasi web untuk mencatat dan mengelola koleksi game pribadi. Dibangun dengan React + Vite + TypeScript menggunakan konsep Component-Based UI Development.
+Aplikasi web untuk mencatat dan mengelola koleksi game pribadi. Dibangun dengan React + Vite + TypeScript menggunakan konsep Component-Based UI Development sebagai tugas Mata Kuliah Pengembangan Aplikasi Web.
 
 ## Fitur
 
@@ -32,7 +32,6 @@ Aplikasi web untuk mencatat dan mengelola koleksi game pribadi. Dibangun dengan 
 - `FilterBar` - Search, filter, sort controls
 - `GameList`, `GameCard` - List rendering
 - `StatusBadge`, `StarRating`, `ConfirmDialog`, `CoverUpload` - Reusable components
-- `ReactNotes` - Dokumentasi konsep
 
 ### 2. Props
 Data mengalir dari parent ke child melalui props. Contoh:
@@ -88,8 +87,7 @@ src/
 │   ├── StatusBadge.tsx
 │   ├── StarRating.tsx
 │   ├── CoverUpload.tsx
-│   ├── ConfirmDialog.tsx
-│   └── ReactNotes.tsx
+│   └── ConfirmDialog.tsx
 ├── hooks/
 │   └── useLocalStorage.ts  # Custom hook for localStorage
 ├── utils/
@@ -187,12 +185,10 @@ interface Game {
 - [x] >= 5 commits
 - [x] Published online
 
-## Author
-
-**[Your Name]** - [Your NIM]  
-Mata Kuliah: Pengembangan Aplikasi Web  
-Website: [Your Profile URL]
-
 ## License
 
-MIT - Tugas Individu
+Project ini dibuat untuk keperluan tugas akademik Mata Kuliah Pengembangan Aplikasi Web.
+
+## Kontak
+
+Untuk pertanyaan atau feedback, silakan buka issue di repository ini atau hubungi melalui [website pribadi](https://hotsummerz.my.id).
