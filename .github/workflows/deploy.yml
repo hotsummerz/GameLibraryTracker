@@ -1,4 +1,4 @@
-name: Deploy to Personal Website
+name: Build
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,12 +25,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to server
-        uses: appleboy/scp-action@v0.1.7
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          source: "dist/*"
-          target: ${{ secrets.DEPLOY_PATH }}
-          strip_components: 1
+          name: dist
+          path: dist
